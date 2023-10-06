@@ -32,7 +32,7 @@ export class AlphaVantageStockingAPI implements StockingAPI {
   async fetchStockHistory(name: string, initialDate: Date, finalDate: Date): Promise<StockHistory | null> {
     if (Clock.isAfterNow(finalDate)) throw new FinalDateInvalidError(finalDate);
 
-    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${name}&outputsize=full&apikey=${this.apiKey}`;
+    const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${name}&outputsize=full&apikey=${this.apiKey}`;
     const { data } = await alphaVantageApi.get<any>(url);
 
     const historyData = data['Time Series (Daily)'] as { [key: string]: any };

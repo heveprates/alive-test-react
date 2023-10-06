@@ -193,3 +193,7 @@ Neste exemplo iremos utilizar a ação **"VAL"**, purchasedAt **"Nov 01 2022 GMT
   "message": "Missing query param: purchasedAmount"
   }
   ```
+
+# 🚨 IMPORTANTE 🚨
+
+Ao utilizar a chave de api do Alpha Vantage você só poderá realizar 5 chamadas por minuto e 100 por dia. Entretanto nada impede que você registre várias chaves para conseguir dar continuidade ao desenvolvimento.
