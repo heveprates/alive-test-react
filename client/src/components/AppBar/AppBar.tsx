@@ -8,8 +8,8 @@ import { Search, SearchIconWrapper, StyledInputBase } from './styles';
 
 export default function AppBar() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBarMaterial>
+    <Box>
+      <AppBarMaterial position="relative">
         <Toolbar>
           <Typography
             variant="h6"
