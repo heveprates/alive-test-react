@@ -4,35 +4,44 @@ import 'dayjs/locale/pt-br';
 dayjs.locale('pt-br');
 
 type MultiLineChartProps = {
-  width?: number;
+  lowSeries: number[];
+  highSeries: number[];
+  openSeries: number[];
+  closeSeries: number[];
+  labels: Date[];
 };
 
-export default function HistoryLineChart() {
-  const makeData = (qtd: number, max = 10, min = 0) =>
-    [...new Array(qtd)].map(() => ((max - min) * Math.random() + min) >> 0);
-  const makeDate = (base: Date, qtd: number) =>
-    [...new Array(qtd)].map((_, i) =>
-      dayjs(base).add(i, 'day').format('D [de] MMMM [de] YYYY'),
-    );
+const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+}).format;
 
-  const xLabels = makeDate(dayjs().subtract(12, 'day').toDate(), 12);
+export default function HistoryLineChart(props: MultiLineChartProps) {
+  const xLabels = props.labels.map((base) =>
+    dayjs(base).format('D [de] MMMM [de] YYYY'),
+  );
   const datamin = {
-    data: makeData(12, 110, 105),
-    label: 'low',
+    data: props.lowSeries,
+    label: 'Minima',
+    valueFormatter: currencyFormatter,
   };
+
   const datamax = {
-    data: makeData(12, 120, 115),
-    label: 'high',
+    data: props.highSeries,
+    label: 'Maxima',
+    valueFormatter: currencyFormatter,
   };
 
   const dataopen = {
-    data: makeData(12, 120, 105),
-    label: 'open',
+    data: props.openSeries,
+    label: 'Abertura',
+    valueFormatter: currencyFormatter,
   };
 
   const dataclose = {
-    data: makeData(12, 120, 105),
-    label: 'close',
+    data: props.closeSeries,
+    label: 'Fechamento',
+    valueFormatter: currencyFormatter,
   };
 
   const bottomAxisId = 'bxid-' + Math.random().toString(36).slice(-4);
