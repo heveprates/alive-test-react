@@ -1,7 +1,5 @@
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
+import { Grid, Paper, Box } from '@mui/material';
+
 import Quote from './Quote';
 import GainLoss from './GainLoss';
 import Comparison from './Comparison';
