@@ -25,12 +25,20 @@ export default function CardHeader(props: CardHeaderProps) {
   };
 
   const handleClose = () => {
-    props.onCancel?.();
+    try {
+      props.onCancel?.();
+    } catch {
+      console.log('error');
+    }
     setAnchorEl(null);
   };
 
   const handleOk = () => {
-    props.onOk?.();
+    try {
+      props.onOk?.();
+    } catch {
+      console.log('error');
+    }
     setAnchorEl(null);
   };
 
