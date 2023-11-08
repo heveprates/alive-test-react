@@ -2,6 +2,7 @@ import { Skeleton, Stack } from '@mui/material';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 import CardInputHeader from '../CardInputHeader';
+import HistoryLineChart from './HistoryLineChart.tsx';
 
 export default function History() {
   return (
@@ -14,7 +15,8 @@ export default function History() {
             currentMonthCalendarPosition={2}
           />
         </CardInputHeader>
-        <Skeleton variant="rounded" height={208} />
+        <HistoryLineChart />
+        {/* <Skeleton variant="rounded" height={208} /> */}
       </Stack>
     </>
   );
