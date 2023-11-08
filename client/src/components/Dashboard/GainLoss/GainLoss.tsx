@@ -8,8 +8,6 @@ import {
   Typography,
   TextField,
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CardHeader from '../CardInputHeader';
 
@@ -35,18 +33,18 @@ export default function GainLoss() {
         >
           <Stack spacing={2} width={200}>
             <TextField
+              fullWidth
               label="Total"
               type="number"
               value={totalValue}
               onChange={(el) => setTotalValue(Number(el.target.value))}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Data"
-                value={dateValue}
-                onChange={setDateValue}
-              />
-            </LocalizationProvider>
+            <DatePicker
+              disableFuture
+              label="Data"
+              value={dateValue}
+              onChange={setDateValue}
+            />
           </Stack>
         </CardHeader>
         <Grid container spacing={1}>
