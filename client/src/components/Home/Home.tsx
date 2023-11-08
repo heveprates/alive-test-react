@@ -9,18 +9,18 @@ export default function Home() {
       <AppBar />
       <Box
         component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
-        }}
+        bgcolor={(theme) =>
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[200]
+            : theme.palette.grey[900]
+        }
+        overflow="auto"
+        height="100vh"
       >
-        <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-          <Dashboard />
+        <Container maxWidth="xl">
+          <Box mt={2} mb={2}>
+            <Dashboard />
+          </Box>
         </Container>
       </Box>
     </>
