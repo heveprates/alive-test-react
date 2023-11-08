@@ -41,6 +41,9 @@ export default function GainLoss() {
             />
             <DatePicker
               disableFuture
+              slotProps={{
+                field: { clearable: true },
+              }}
               label="Data"
               value={dateValue}
               onChange={setDateValue}
