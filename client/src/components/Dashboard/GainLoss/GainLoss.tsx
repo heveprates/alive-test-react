@@ -18,6 +18,7 @@ export default function GainLoss() {
 
   const cardInputOkHandler = () => {
     setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
   };
   const cardInputCancelHandler = () => {
     setIsLoading(false);
