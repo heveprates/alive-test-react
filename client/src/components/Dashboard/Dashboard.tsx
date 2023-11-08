@@ -2,39 +2,43 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
+import Quote from './Quote';
+import GainLoss from './GainLoss';
+import Comparison from './Comparison';
+import History from './History';
 
 export default function Dashboard() {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6} lg={9}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={7}>
             <Paper>
-              <Box p={2}>
-                <Skeleton variant="rounded" height={240} />
+              <Box p={2} height={240}>
+                <Quote />
               </Box>
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={5}>
             <Paper>
-              <Box p={2}>
-                <Skeleton variant="rounded" height={240} />
+              <Box p={2} height={240}>
+                <GainLoss />
               </Box>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper>
               <Box p={2}>
-                <Skeleton variant="rounded" height={240} />
+                <History />
               </Box>
             </Paper>
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12} md={6} lg={3}>
-        <Paper>
-          <Box p={2}>
-            <Skeleton variant="rounded" height={540} />
+        <Paper sx={{ height: '100%' }}>
+          <Box p={2} height="100%">
+            <Comparison />
           </Box>
         </Paper>
       </Grid>
