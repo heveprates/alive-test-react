@@ -9,6 +9,7 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NorthIcon from '@mui/icons-material/North';
@@ -60,6 +61,18 @@ export default function Comparison() {
           </Box>
         </CardInputHeader>
         <List>
+          {comparisonList.length === 0 && !isLoading ? (
+            <Typography
+              mt={6}
+              variant="h6"
+              color={(theme) => theme.palette.text.secondary}
+              textAlign="center"
+            >
+              Compare os valores
+              <br />
+              de outros ativos
+            </Typography>
+          ) : null}
           {comparisonList.map((item) => (
             <ListItem
               key={'list_item_' + item.id}
