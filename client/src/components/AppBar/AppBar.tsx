@@ -1,12 +1,23 @@
-import AppBarMaterial from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import { FormEvent, useState } from 'react';
+import {
+  AppBar as AppBarMaterial,
+  Box,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { Search, SearchIconWrapper, StyledInputBase } from './styles';
+import { useFetchQuote } from '../../services/fetchQuote';
 
 export default function AppBar() {
+  const [searchValue, setSearchValue] = useState('');
+  const fetchQuote = useFetchQuote();
+  function handleSearchSubmit(event: FormEvent) {
+    event.preventDefault();
+    fetchQuote(searchValue).then(() => setSearchValue(''));
+  }
+
   return (
     <Box>
       <AppBarMaterial position="relative">
@@ -19,15 +30,21 @@ export default function AppBar() {
           >
             TESTE HEVELLYN ALPHA
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          <form onSubmit={handleSearchSubmit}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchValue}
+                onChange={(event) =>
+                  setSearchValue(event.target.value.toUpperCase())
+                }
+              />
+            </Search>
+          </form>
         </Toolbar>
       </AppBarMaterial>
     </Box>
