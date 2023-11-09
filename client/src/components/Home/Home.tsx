@@ -15,9 +15,8 @@ export default function Home() {
         ) : (
           <Box mt={8} textAlign="center">
             <Typography variant="h3" component="h1">
-              Busque por conhecimento
+              Pesquise por um Ativo
             </Typography>
-            <Typography variant="h5">ET Bilu</Typography>
           </Box>
         )}
       </MainLayout>
