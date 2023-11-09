@@ -1,14 +1,28 @@
-import { useState, useEffect } from 'react';
-
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@mui/material/Skeleton';
+import dayjs from 'dayjs';
+
+import { useQuote } from '../../../stores/useQuote';
+import { currencyFormatter } from '../../../tools/currencyFormatter';
 
 export default function Quote() {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 2456);
-  });
+  const [isLoading, data, stock] = useQuote((state) => [
+    state.isLoading,
+    state.data,
+    state.stock,
+  ]);
+  const display = {
+    price: '',
+    date: '',
+  };
+  if (data) {
+    display.price = currencyFormatter(data.lastPrice);
+    display.date = `preço em ${dayjs(data.pricedAt).format(
+      'DD [de] MMMM [de] YYYY',
+    )}`;
+  }
+
   return (
     <>
       <Grid container spacing={0.5} height="100%" alignItems="center">
@@ -18,7 +32,7 @@ export default function Quote() {
             component="h1"
             color={(theme) => theme.palette.primary.main}
           >
-            APPL
+            {stock}
           </Typography>
         </Grid>
         <Grid item xs="auto">
@@ -26,7 +40,7 @@ export default function Quote() {
             {isLoading ? (
               <Skeleton variant="rounded" height="1lh" width="7ch" />
             ) : (
-              'R$ 149,00'
+              display.price
             )}
           </Typography>
           <Typography
@@ -37,7 +51,7 @@ export default function Quote() {
             {isLoading ? (
               <Skeleton variant="rounded" height="1lh" width="31ch" />
             ) : (
-              'preço em 10 de dezembro de 2021'
+              display.date
             )}
           </Typography>
         </Grid>
