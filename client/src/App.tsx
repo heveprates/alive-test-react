@@ -2,10 +2,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 
 import Home from './components/Home';
 
+dayjs.locale('pt-br');
 const defaultTheme = createTheme();
 
 function App() {

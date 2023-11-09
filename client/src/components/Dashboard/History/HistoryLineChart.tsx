@@ -1,7 +1,7 @@
 import { LineChart } from '@mui/x-charts/LineChart';
 import dayjs from 'dayjs';
-import 'dayjs/locale/pt-br';
-dayjs.locale('pt-br');
+
+import { currencyFormatter } from '../../../tools/currencyFormatter';
 
 type MultiLineChartProps = {
   lowSeries: number[];
@@ -10,11 +10,6 @@ type MultiLineChartProps = {
   closeSeries: number[];
   labels: Date[];
 };
-
-const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-}).format;
 
 export default function HistoryLineChart(props: MultiLineChartProps) {
   const xLabels = props.labels.map((base) =>
