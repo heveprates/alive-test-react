@@ -35,13 +35,10 @@ export function useFetchGainLoss() {
     state.stock,
     state.data?.lastPrice,
   ]);
-  const [clearComparison, loadComparison, addComparison] = useComparison(
-    (state) => [
-      state.clearComparison,
-      state.loadComparison,
-      state.addComparison,
-    ],
-  );
+  const [loadComparison, addComparison] = useComparison((state) => [
+    state.loadComparison,
+    state.addComparison,
+  ]);
 
   return function fetch(stockToCompare: string) {
     if (!stock || !lastPrice) {
@@ -52,16 +49,14 @@ export function useFetchGainLoss() {
 
     const requestFetch = fetchComparison(stock, stockToCompare);
 
-    requestFetch
-      .then((data) =>
-        addComparison({
-          name: data.name,
-          price: data.price,
-          isBig: data.price > lastPrice,
-          isSmall: data.price < lastPrice,
-        }),
-      )
-      .catch(() => clearComparison());
+    requestFetch.then((data) =>
+      addComparison({
+        name: data.name,
+        price: data.price,
+        isBig: data.price > lastPrice,
+        isSmall: data.price < lastPrice,
+      }),
+    );
 
     return requestFetch;
   };
