@@ -16,18 +16,30 @@ import SouthIcon from '@mui/icons-material/South';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import CardInputHeader from '../CardInputHeader';
+import { useFetchGainLoss } from '../../../services/fetchComparison';
+import { useComparison } from '../../../stores/useComparison';
 
 export default function Comparison() {
-  const [tickerValue, setTickerValue] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, data, removeComparison] = useComparison((state) => [
+    state.isLoading,
+    state.data,
+    state.removeComparison,
+  ]);
+  const [tickerValue, setTickerValue] = useState<string>('');
+  const fetchComparison = useFetchGainLoss();
 
   const cardInputOkHandler = () => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+    if (tickerValue === '') {
+      return;
+    }
+    setTickerValue('');
+    fetchComparison(tickerValue);
   };
   const cardInputCancelHandler = () => {
-    setLoading(false);
+    setTickerValue('');
   };
+
+  const comparisonList = data ? [...data.values()] : [];
   return (
     <>
       <Stack spacing={0.5} height="100%">
@@ -46,48 +58,34 @@ export default function Comparison() {
             />
           </Box>
         </CardInputHeader>
-        {loading ? (
-          <Skeleton variant="rounded" height="100%" />
-        ) : (
-          <List>
+        <List>
+          {comparisonList.map((item) => (
             <ListItem
+              key={'list_item_' + item.id}
               secondaryAction={
-                <IconButton edge="end" aria-label="delete">
+                <IconButton
+                  onClick={() => removeComparison(item.id)}
+                  edge="end"
+                  aria-label="delete"
+                >
                   <DeleteIcon />
                 </IconButton>
               }
             >
               <ListItemIcon>
-                <NorthIcon />
+                {item.isBig ? (
+                  <NorthIcon />
+                ) : item.isSmall ? (
+                  <SouthIcon />
+                ) : (
+                  <ArrowForwardIcon />
+                )}
               </ListItemIcon>
-              <ListItemText primary="R$ 1.000,00" secondary="GOOGL" />
+              <ListItemText primary={item.price} secondary={item.name} />
             </ListItem>
-            <ListItem
-              secondaryAction={
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemIcon>
-                <ArrowForwardIcon />
-              </ListItemIcon>
-              <ListItemText primary="R$ 149,00" secondary="IBM" />
-            </ListItem>
-            <ListItem
-              secondaryAction={
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemIcon>
-                <SouthIcon />
-              </ListItemIcon>
-              <ListItemText primary="AMZN" secondary="R$ 35,99" />
-            </ListItem>
-          </List>
-        )}
+          ))}
+          {isLoading ? <Skeleton variant="rounded" height="72px" /> : null}
+        </List>
       </Stack>
     </>
   );
