@@ -18,6 +18,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CardInputHeader from '../CardInputHeader';
 import { useFetchGainLoss } from '../../../services/fetchComparison';
 import { useComparison } from '../../../stores/useComparison';
+import { currencyFormatter } from '../../../tools/currencyFormatter';
 
 export default function Comparison() {
   const [isLoading, data, removeComparison] = useComparison((state) => [
@@ -81,7 +82,10 @@ export default function Comparison() {
                   <ArrowForwardIcon />
                 )}
               </ListItemIcon>
-              <ListItemText primary={item.price} secondary={item.name} />
+              <ListItemText
+                primary={currencyFormatter(item.price)}
+                secondary={item.name}
+              />
             </ListItem>
           ))}
           {isLoading ? <Skeleton variant="rounded" height="72px" /> : null}
