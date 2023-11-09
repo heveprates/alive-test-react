@@ -1,26 +1,59 @@
-import { useState } from 'react';
-import { Skeleton, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import type { DateRange } from '@mui/x-date-pickers-pro';
 import dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
 
 import CardInputHeader from '../CardInputHeader';
 import HistoryLineChart from './HistoryLineChart.tsx';
+import { useHistory } from '../../../stores/useHistory.ts';
+import { useFetchHistory } from '../../../services/fetchHistory.ts';
 
 export default function History() {
-  const makeData = (qtd: number, max = 10, min = 0) =>
-    [...new Array(qtd)].map(() => ((max - min) * Math.random() + min) >> 0);
-  const makeDate = (base: Date, qtd: number) =>
-    [...new Array(qtd)].map((_, i) => dayjs(base).add(i, 'day').toDate());
+  const { isLoading, param, data } = useHistory();
+  const fetchHistory = useFetchHistory();
+  const [dateRange, setDateRange] = useState<DateRange<Dayjs>>([
+    dayjs().subtract(15, 'day'),
+    dayjs().subtract(1, 'day'),
+  ]);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const isEmptyState = param === null;
+
+  useEffect(() => {
+    if (isEmptyState) {
+      setDateRange([dayjs().subtract(15, 'day'), dayjs().subtract(1, 'day')]);
+    }
+  }, [isEmptyState]);
 
   const cardInputOkHandler = () => {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
+    if (dateRange[0] === null || dateRange[1] === null) {
+      return;
+    }
+    fetchHistory(dateRange[0].toDate(), dateRange[1].toDate());
   };
   const cardInputCancelHandler = () => {
-    setIsLoading(false);
+    if (isEmptyState) {
+      setDateRange([dayjs().subtract(15, 'day'), dayjs().subtract(1, 'day')]);
+      return;
+    }
+    setDateRange([dayjs(param.from), dayjs(param.to)]);
   };
+
+  const dataSeries = {
+    labels: [new Date()],
+    low: [0],
+    high: [0],
+    open: [0],
+    close: [0],
+  };
+  if (data) {
+    dataSeries.labels = data.prices.map((item) => item.date);
+    dataSeries.low = data.prices.map((item) => item.low);
+    dataSeries.high = data.prices.map((item) => item.high);
+    dataSeries.open = data.prices.map((item) => item.opening);
+    dataSeries.close = data.prices.map((item) => item.closing);
+  }
 
   return (
     <>
@@ -33,18 +66,27 @@ export default function History() {
           <DateRangePicker
             localeText={{ start: 'Inicio', end: 'Fim' }}
             disableFuture
-            currentMonthCalendarPosition={2}
+            value={dateRange}
+            onChange={(newValue) => setDateRange(newValue)}
           />
         </CardInputHeader>
-        {isLoading ? (
+        {isEmptyState ? (
+          <Typography
+            variant="h6"
+            color={(theme) => theme.palette.text.secondary}
+            textAlign="center"
+          >
+            Veja o historico de valores
+          </Typography>
+        ) : isLoading ? (
           <Skeleton variant="rounded" height={400} />
         ) : (
           <HistoryLineChart
-            labels={makeDate(dayjs().subtract(12, 'day').toDate(), 12)}
-            lowSeries={makeData(12, 110, 105)}
-            highSeries={makeData(12, 130, 125)}
-            openSeries={makeData(12, 125, 110)}
-            closeSeries={makeData(12, 125, 110)}
+            labels={dataSeries.labels}
+            lowSeries={dataSeries.low}
+            highSeries={dataSeries.high}
+            openSeries={dataSeries.open}
+            closeSeries={dataSeries.close}
           />
         )}
       </Stack>
