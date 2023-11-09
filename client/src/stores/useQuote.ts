@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 type EmptyQuoteStore = {
   isLoading: false;
@@ -31,29 +32,40 @@ type QuoteStoreActions = {
 
 type QuoteStore = QuoteStoreData & QuoteStoreActions;
 
-export const useQuote = create<QuoteStore>((set) => ({
-  isLoading: false,
-  data: null,
-  stock: null,
-  loadQuote: (stock) => {
-    set({
-      isLoading: true,
-      data: null,
-      stock,
-    });
-  },
-  clearQuote: () => {
-    set({
+export const useQuote = create(
+  devtools<QuoteStore>(
+    (set) => ({
       isLoading: false,
       data: null,
       stock: null,
-    });
-  },
-  setQuote: (stock, data) => {
-    set({
-      isLoading: false,
-      data,
-      stock,
-    });
-  },
-}));
+      loadQuote: (stock) => {
+        set({
+          isLoading: true,
+          data: null,
+          stock,
+        });
+      },
+      clearQuote: () => {
+        set({
+          isLoading: false,
+          data: null,
+          stock: null,
+        });
+      },
+      setQuote: (stock, data) => {
+        set({
+          isLoading: false,
+          data: {
+            lastPrice: data.lastPrice,
+            pricedAt: data.pricedAt,
+          },
+          stock,
+        });
+      },
+    }),
+    {
+      name: 'Quote',
+      store: 'Quote',
+    },
+  ),
+);
