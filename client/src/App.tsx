@@ -9,6 +9,7 @@ import 'dayjs/locale/pt-br';
 import Home from './components/Home';
 import { useQuote } from './stores/useQuote';
 import { useGainLoss } from './stores/useGainLoss';
+import { useComparison } from './stores/useComparison';
 
 dayjs.locale('pt-br');
 const defaultTheme = createTheme();
@@ -20,8 +21,10 @@ const clearStore = {
 function App() {
   const stock = useQuote((state) => state.stock);
   const clearGainLoss = useGainLoss((state) => state.clearGainLoss);
+  const clearComparison = useComparison((state) => state.clearComparison);
   clearStore.handle = () => {
     clearGainLoss();
+    clearComparison();
   };
   useEffect(() => {
     clearStore.handle();
